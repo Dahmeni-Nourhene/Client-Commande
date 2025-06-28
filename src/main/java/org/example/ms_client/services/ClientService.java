@@ -1,19 +1,28 @@
 package org.example.ms_client.services;
 
+import lombok.RequiredArgsConstructor;
+import org.example.ms_client.dto.CommandeDTO;
 import org.example.ms_client.entities.Client;
+
 import org.example.ms_client.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@RequiredArgsConstructor
 @Service
 public class ClientService {
 
-    @Autowired
-    private ClientRepository clientRepository;
 
+
+    private  final ClientRepository clientRepository;
+
+    private  final CommandeRestClient commandeRestClient;
+
+    public List<CommandeDTO> getCommandesForClient(String clientId) {
+        return commandeRestClient.getCommandesByClientId(clientId);
+    }
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
