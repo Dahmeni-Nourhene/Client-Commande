@@ -98,14 +98,17 @@ public class ClientController {
 public ResponseEntity<?> getCommandes(@PathVariable String id) {
     try {
         List<CommandeDTO> commandes = service.getCommandesByClientId(id);
-        if (commandes.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body("Le service Commande est indisponible ou aucune commande trouvée.");
+
+        if(commandes == null || commandes.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+                    .body("Service Commande temporairement indisponible");
         }
+
         return ResponseEntity.ok(commandes);
+
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("Erreur lors de l’appel au service Commande : " + e.getMessage());
+                .body("Erreur de communication avec le service Commande");
     }
 }
 
